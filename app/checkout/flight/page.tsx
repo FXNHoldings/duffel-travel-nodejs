@@ -369,6 +369,76 @@ export default function FlightCheckoutPage() {
     }
   }
 
+  async function handleInstantPayment(cardId: string) {
+    if (!selection?.offer?.id || !bookingPayload || !componentClientKey) {
+      setPaymentError("Payment form is not ready yet.");
+      return;
+    }
+
+    const paymentAmount = bookingPayload.payments?.[0]?.amount ?? selection.offer.total_amount;
+    const paymentCurrency = bookingPayload.payments?.[0]?.currency ?? selection.offer.total_currency;
+    const servicesForThreeDS = (bookingPayload.services ?? []).map((service) => ({
+      id: service.id,
+      quantity: service.quantity ?? 1
+    }));
+
+    setCreatingOrder(true);
+    setError(null);
+    setPaymentError(null);
+
+    try {
+      const threeDSecureSession = await createThreeDSecureSession(
+        componentClientKey,
+        cardId,
+        selection.offer.id,
+        servicesForThreeDS,
+        true
+      );
+
+      if (threeDSecureSession.status !== "ready_for_payment") {
+        throw new Error("Card authentication was not completed. Please try again.");
+      }
+
+      const response = await fetch("/api/flights/order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...bookingPayload,
+          type: "instant",
+          payments: [
+            {
+              type: "card",
+              amount: paymentAmount,
+              currency: paymentCurrency,
+              three_d_secure_session_id: threeDSecureSession.id
+            }
+          ]
+        })
+      });
+
+      const payload = await response.json();
+
+      if (!response.ok) {
+        throw new Error(payload.error ?? "Unable to create paid order");
+      }
+
+      router.push(`/confirmation/flight?orderId=${payload.order.id}`);
+    } catch (createError) {
+      setPaymentError(createError instanceof Error ? createError.message : "Unable to complete payment");
+    } finally {
+      setCreatingOrder(false);
+    }
+  }
+
+  function handlePayAndBook() {
+    if (!cardFormValid) {
+      setPaymentError("Enter valid card details before continuing.");
+      return;
+    }
+
+    createCardForTemporaryUse();
+  }
+
   return (
     <main className="page">
       <section className="results-page">
@@ -678,6 +748,67 @@ export default function FlightCheckoutPage() {
             </section>
           ) : null}
 
+          {showPaymentStep ? (
+            <section className="payload-section">
+              <div className="page-head">
+                <div>
+                  <p className="eyebrow-text">Payment</p>
+                  <h2>Pay with card</h2>
+                  <p className="muted">Enter the traveller's card details, complete any required 3D Secure check, then create the booking.</p>
+                </div>
+              </div>
+
+              <div className="status-card payment-card">
+                {loadingComponentClientKey ? <div className="checkout-note">Preparing secure card form...</div> : null}
+                {paymentError ? <div className="checkout-inline-error">{paymentError}</div> : null}
+                {componentClientKey ? (
+                  <div className="card-form-wrap">
+                    <DuffelCardForm
+                      clientKey={componentClientKey}
+                      intent="to-create-card-for-temporary-use"
+                      onCreateCardForTemporaryUseFailure={(cardError) => setPaymentError(cardError.message)}
+                      onCreateCardForTemporaryUseSuccess={(card) => {
+                        handleInstantPayment(card.id);
+                      }}
+                      onValidateFailure={() => setCardFormValid(false)}
+                      onValidateSuccess={() => {
+                        setCardFormValid(true);
+                        setPaymentError(null);
+                      }}
+                      ref={cardFormRef}
+                      styles={{
+                        input: {
+                          default: {
+                            "border-radius": "16px",
+                            border: "1px solid #d0d5dd",
+                            "min-height": "54px",
+                            padding: "0 14px",
+                            "font-family": "Outfit, sans-serif",
+                            "font-size": "14px"
+                          }
+                        },
+                        label: {
+                          "font-family": "Outfit, sans-serif",
+                          "font-size": "14px"
+                        }
+                      }}
+                    />
+                  </div>
+                ) : null}
+                <div className="payload-actions">
+                  <button
+                    className="search-button"
+                    disabled={!componentClientKey || loadingComponentClientKey || creatingOrder}
+                    onClick={handlePayAndBook}
+                    type="button"
+                  >
+                    {creatingOrder ? "Processing payment..." : "Pay and book"}
+                  </button>
+                </div>
+              </div>
+            </section>
+          ) : null}
+
           {orderPayload ? (
             <section className="payload-section">
               <div className="page-head">
@@ -700,22 +831,13 @@ export default function FlightCheckoutPage() {
                 <article className="status-card">
                   <h3>Create order payload</h3>
                   <pre className="payload-pre">{JSON.stringify(bookingPayload, null, 2)}</pre>
-                  <div className="payload-actions">
-                    {requiresInstantPayment ? (
-                      <div className="checkout-inline-error">
-                        This offer requires payment before booking can be completed. Payment collection is the next step to
-                        wire in.
-                      </div>
-                    ) : null}
-                    <button
-                      className="search-button"
-                      disabled={creatingOrder || requiresInstantPayment}
-                      onClick={handleCreateOrder}
-                      type="button"
-                    >
-                      {creatingOrder ? "Creating order..." : noOptionalAncillaries ? "Continue to booking" : "Book flight"}
-                    </button>
-                  </div>
+                  {!requiresInstantPayment ? (
+                    <div className="payload-actions">
+                      <button className="search-button" disabled={creatingOrder} onClick={handleCreateOrder} type="button">
+                        {creatingOrder ? "Creating order..." : noOptionalAncillaries ? "Continue to booking" : "Book flight"}
+                      </button>
+                    </div>
+                  ) : null}
                 </article>
               </div>
             </section>
