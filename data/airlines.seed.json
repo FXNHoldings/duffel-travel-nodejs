@@ -1,0 +1,70 @@
+[
+  {
+    "iataCode": "BA",
+    "icaoCode": "BAW",
+    "name": "British Airways",
+    "legalName": "British Airways Plc",
+    "alliance": "oneworld",
+    "countryCode": "GB",
+    "countryName": "United Kingdom",
+    "callsign": "SPEEDBIRD",
+    "websiteUrl": "https://www.britishairways.com",
+    "logoUrl": "",
+    "logoLocalPath": "",
+    "isActive": true
+  },
+  {
+    "iataCode": "JQ",
+    "icaoCode": "JST",
+    "name": "Jetstar Airways",
+    "legalName": "Jetstar Airways Pty Ltd",
+    "countryCode": "AU",
+    "countryName": "Australia",
+    "callsign": "JETSTAR",
+    "websiteUrl": "https://www.jetstar.com",
+    "logoUrl": "",
+    "logoLocalPath": "",
+    "isActive": true
+  },
+  {
+    "iataCode": "QF",
+    "icaoCode": "QFA",
+    "name": "Qantas",
+    "legalName": "Qantas Airways Limited",
+    "alliance": "oneworld",
+    "countryCode": "AU",
+    "countryName": "Australia",
+    "callsign": "QANTAS",
+    "websiteUrl": "https://www.qantas.com",
+    "logoUrl": "",
+    "logoLocalPath": "",
+    "isActive": true
+  },
+  {
+    "iataCode": "VA",
+    "icaoCode": "VOZ",
+    "name": "Virgin Australia",
+    "legalName": "Virgin Australia Airlines Pty Ltd",
+    "countryCode": "AU",
+    "countryName": "Australia",
+    "callsign": "VIRGIN",
+    "websiteUrl": "https://www.virginaustralia.com",
+    "logoUrl": "",
+    "logoLocalPath": "",
+    "isActive": true
+  },
+  {
+    "iataCode": "SQ",
+    "icaoCode": "SIA",
+    "name": "Singapore Airlines",
+    "legalName": "Singapore Airlines Limited",
+    "alliance": "Star Alliance",
+    "countryCode": "SG",
+    "countryName": "Singapore",
+    "callsign": "SINGAPORE",
+    "websiteUrl": "https://www.singaporeair.com",
+    "logoUrl": "",
+    "logoLocalPath": "",
+    "isActive": true
+  }
+]

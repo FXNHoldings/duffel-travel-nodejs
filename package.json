@@ -7,12 +7,21 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio",
+    "db:import:airlines": "tsx scripts/import-airlines.ts data/airlines.seed.json"
   },
   "dependencies": {
     "@duffel/api": "2.14.0",
     "@duffel/components": "^3.14.0",
+    "@prisma/adapter-pg": "^7.8.0",
+    "@prisma/client": "^7.8.0",
     "next": "15.5.15",
+    "pg": "^8.20.0",
+    "prisma": "^7.8.0",
     "react": "19.1.0",
     "react-dom": "19.1.0"
   },
@@ -20,6 +29,7 @@
     "@types/node": "22.15.3",
     "@types/react": "19.1.2",
     "@types/react-dom": "19.1.2",
+    "tsx": "^4.20.6",
     "typescript": "5.8.3"
   }
 }

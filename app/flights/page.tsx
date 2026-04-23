@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useMemo, useState } from "react";
+import { CHECKOUT_STORAGE_KEY } from "../checkout/flight/shared";
 
 type FlightOffer = {
   id: string;
@@ -93,6 +94,16 @@ function FlightsPageContent() {
   const [stopsFilter, setStopsFilter] = useState<StopsFilter>("any");
   const [maxPrice, setMaxPrice] = useState<number | null>(null);
   const [expandedOfferIds, setExpandedOfferIds] = useState<string[]>([]);
+  const [staleFareNotice, setStaleFareNotice] = useState<string | null>(null);
+
+  useEffect(() => {
+    const nextNotice = sessionStorage.getItem("flight-search-error");
+
+    if (nextNotice) {
+      setStaleFareNotice("That fare or its linked extras expired. Choose a fresh flight to continue.");
+      sessionStorage.removeItem("flight-search-error");
+    }
+  }, []);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -203,8 +214,9 @@ function FlightsPageContent() {
       }
     };
 
+    sessionStorage.removeItem(CHECKOUT_STORAGE_KEY);
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
-    router.push("/checkout/flight");
+    router.push("/checkout/flight/travellers");
   }
 
   function toggleAirline(airline: string) {
@@ -238,6 +250,7 @@ function FlightsPageContent() {
 
           {loading ? <div className="status-card">Loading flight offers...</div> : null}
           {error ? <div className="status-card">{error}</div> : null}
+          {staleFareNotice ? <div className="status-card">{staleFareNotice}</div> : null}
 
           {!loading && !error ? (
             <div className="flight-results-layout">

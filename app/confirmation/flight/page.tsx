@@ -25,10 +25,17 @@ export default function FlightConfirmationPage() {
 
 function FlightConfirmationContent() {
   const searchParams = useSearchParams();
-  const orderId = searchParams?.get("orderId") ?? "";
+  const [orderId, setOrderId] = useState("");
   const [order, setOrder] = useState<Order | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const queryOrderId = searchParams?.get("orderId") ?? "";
+    const storedOrderId =
+      typeof window !== "undefined" ? window.sessionStorage.getItem("latest-flight-order-id") ?? "" : "";
+    setOrderId(queryOrderId || storedOrderId);
+  }, [searchParams]);
 
   useEffect(() => {
     if (!orderId) {

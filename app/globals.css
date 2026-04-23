@@ -11,9 +11,9 @@
   --accent-strong: #e25700;
   --success: #12715b;
   --shadow: 0 20px 48px rgba(17, 24, 39, 0.08);
-  --radius-xl: 28px;
-  --radius-lg: 20px;
-  --radius-md: 16px;
+  --radius-xl: 6px;
+  --radius-lg: 4px;
+  --radius-md: 2px;
 }
 
 * {
@@ -227,7 +227,7 @@ a {
 .mode-tabs button.active {
   background: var(--accent);
   color: white;
-  font-weight: 700;
+  font-weight: 00;
 }
 
 .search-panel {
@@ -278,7 +278,7 @@ a {
 .field select {
   width: 100%;
   min-height: 54px;
-  border-radius: 18px;
+    border-radius: 4px;
   border: 1px solid var(--line);
   background: white;
   padding: 0 16px;
@@ -295,7 +295,7 @@ a {
 
 .search-button {
   border: 0;
-  border-radius: 18px;
+    border-radius: 4px;
   min-height: 54px;
   padding: 0 24px;
   cursor: pointer;
@@ -338,7 +338,7 @@ a {
 .brief-card {
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: 24px;
+  border-radius: 4px;
   box-shadow: var(--shadow);
 }
 
@@ -409,7 +409,7 @@ a {
 
 .result-item {
   border: 1px solid var(--line);
-  border-radius: 18px;
+    border-radius: 4px;
   padding: 14px;
   background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
 }
@@ -486,7 +486,7 @@ a {
 .status-card {
   padding: 18px;
   border: 1px solid var(--line);
-  border-radius: 18px;
+    border-radius: 4px;
   background: #ffffff;
 }
 
@@ -536,7 +536,7 @@ a {
   min-height: 40px;
   padding: 0 14px;
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: 4px;
   background: #ffffff;
   color: var(--text);
   cursor: pointer;
@@ -683,7 +683,7 @@ a {
   min-height: 36px;
   padding: 0 12px;
   border: 1px solid var(--line);
-  border-radius: 12px;
+    border-radius: 4px;;
   background: #ffffff;
   color: var(--text);
   font-size: 0.85rem;
@@ -698,7 +698,7 @@ a {
   padding: 18px;
   border-top: 1px solid var(--line);
   background: #f9fbfc;
-  border-radius: 18px;
+    border-radius: 4px;
 }
 
 .flight-expanded-head {
@@ -862,7 +862,7 @@ a {
 
 .checkout-note {
   padding: 16px;
-  border-radius: 18px;
+    border-radius: 4px;
   background: #f6f8fa;
   color: var(--muted);
   line-height: 1.5;
@@ -875,6 +875,17 @@ a {
   border-radius: 16px;
   background: #fff5f4;
   color: #a23c33;
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+.checkout-inline-info {
+  margin-top: 12px;
+  padding: 14px 16px;
+  border: 1px solid #bfd5f1;
+  border-radius: 16px;
+  background: #f4f8ff;
+  color: #1d4f91;
   font-size: 0.92rem;
   font-weight: 500;
 }
@@ -903,7 +914,7 @@ a {
   gap: 14px;
   padding: 18px;
   border: 1px solid var(--line);
-  border-radius: 18px;
+    border-radius: 4px;
   background: #ffffff;
 }
 
@@ -1008,7 +1019,7 @@ a {
   gap: 14px;
   padding: 18px;
   border: 1px solid var(--line);
-  border-radius: 18px;
+    border-radius: 4px;
   background: #fbfcfd;
 }
 
@@ -1064,8 +1075,21 @@ a {
 .card-form-wrap {
   padding: 18px;
   border: 1px solid var(--line);
-  border-radius: 18px;
+    border-radius: 4px;
   background: #fbfcfd;
+}
+
+.payment-retry {
+  display: inline-flex;
+  margin-left: 8px;
+}
+
+.checkout-success-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
 }
 
 .confirmation-list {
@@ -1096,7 +1120,7 @@ a {
 
 .ad-media {
   min-height: 180px;
-  border-radius: 18px;
+    border-radius: 4px;
   display: grid;
   place-items: center;
   background: linear-gradient(135deg, #dfe8ec 0%, #eef3f6 100%);
@@ -1108,7 +1132,7 @@ a {
 .ad-button {
   min-height: 42px;
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 4px;
   background: #f5f7fa;
   color: var(--text);
   font-size: 0.9rem;
